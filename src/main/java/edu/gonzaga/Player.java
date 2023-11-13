@@ -8,7 +8,13 @@ public class Player {
     /** Holds the player's name */
     private String name;
 
-    public Player() {
+    private Integer playerNum;
+
+    public Player(String name, String color, Integer num) {
+        this.name = name;
+        this.color = color;
+        score = 0;
+        this.playerNum = num;
     }
 
     public String getName() {
@@ -31,6 +37,10 @@ public class Player {
 
     public void placeToken(Integer column) {
 
+    }
+
+    public Integer getPlayerNum() {
+        return playerNum;
     }
 
 }
