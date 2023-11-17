@@ -17,11 +17,11 @@ public class Board {
 
     public boolean placeToken(int playerNum, int column) {
         int index = checkIfValidPlace(column);
-        if (index == -1) { // why five here?
+        if (index == -1) {
             return false;
         }
         else {
-            board[index][column] = playerNum;
+            board[index][column - 1] = playerNum;
             return true;
         }
     }
@@ -29,7 +29,7 @@ public class Board {
     private int checkIfValidPlace(int column) {
         int index = -1;
         for (int i = 5; i >= 0; i--) {
-            if (board[i][column] == 0) {
+            if (board[i][column - 1] == 0) {
                 index = i;
                 return index;
             }

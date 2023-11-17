@@ -52,10 +52,10 @@ public class ConnectFour {
             board.printBoard();
         }
         if (roundCount % 2 == 1){
-            System.out.println(player1Name + " you won!");
+            System.out.println(player1.getName() + " you won!");
         }
         else {
-            System.out.println(player2Name + " you won!");
+            System.out.println(player2.getName() + " you won!");
         }
 
 
