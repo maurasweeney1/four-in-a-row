@@ -7,27 +7,20 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class Frame extends JFrame {
-    private static final int DEFAULT_WIDTH = 600;
-    private static final int DEFAULT_HEIGHT = 600;
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 200;
+
 
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        BufferedImage connect4;
-        JLabel picLabel = null;
-        try {
-            connect4 = ImageIO.read(new File("/images/Connect4Logo.png"));
-            picLabel = new JLabel(new ImageIcon(connect4));
-            picLabel.setBounds(50, 130, 100, 150);
-            this.add(picLabel);
-            picLabel.setVisible(true);
-        } catch (IOException e) {
-            System.out.println("unable to find image");
-        }
+        setMinimumSize(new Dimension(600,600));
+        setMaximumSize(new Dimension(600,600));
     }
 
     public void showStartScreen(Player player1, Player player2) {
@@ -99,5 +92,47 @@ class Frame extends JFrame {
         frame.getContentPane().add(BorderLayout.EAST, player2Panel);
         frame.getContentPane().add(BorderLayout.SOUTH, start);
         frame.setVisible(true);
+    }
+
+    public void showGameScreen() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Connect4");
+
+        Container gameLayout = getContentPane();
+        gameLayout.setLayout(new BorderLayout());
+
+        JPanel gamePanel = new JPanel();
+        createGameBoard(gamePanel);
+        gameLayout.add(gamePanel, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    public void hideGameScreen() {
+        
+    }
+
+    public void createGameBoard(JPanel panel) {
+        JPanel board = new JPanel();
+        board.setLayout(new GridLayout(7,7,1,1));
+
+        JButton[][] cells = new JButton[7][7];
+
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < 7; col++) {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(50, 50));
+
+                if (row == 0) {
+                    button.setText("Column " + (col + 1));
+                }
+
+                Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+                button.setBorder(border);
+
+                cells[row][col] = button;
+                board.add(button);
+            }
+        }
+        panel.add(board);
     }
 }
