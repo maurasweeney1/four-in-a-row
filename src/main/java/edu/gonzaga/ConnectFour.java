@@ -33,6 +33,7 @@ public class ConnectFour {
         board.setBoard();
 
         while (!board.checkIfFourInARow()) {
+            frame.showGameScreen();
             System.out.println("What column do you want?");
             Integer column = scanner.nextInt();
             if (roundCount % 2 == 1) {
@@ -44,6 +45,8 @@ public class ConnectFour {
             roundCount++;
             board.printBoard();
         }
+        frame.hideGameScreen();
+        
         if (roundCount % 2 == 1){
             System.out.println(player1.getName() + " you won!");
         }
