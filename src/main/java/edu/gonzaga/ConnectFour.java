@@ -11,31 +11,24 @@
  * Copyright: 2023
  */
 package edu.gonzaga;
+
 import java.util.Scanner;
 
 /** Main program class for launching your team's program. */
 public class ConnectFour {
     public static void main(String[] args) {
+
+        Player player1 = new Player(1);
+        Player player2 = new Player(2);
+
+        Frame frame = new Frame();
+        frame.showStartScreen(player1, player2);
+
         Scanner scanner = new Scanner(System.in);
 
         Board board = new Board();
 
         Integer roundCount = 1;
-
-        System.out.println("What is player 1's name?");
-        String player1Name = scanner.nextLine();
-        System.out.println("Pick a color");
-        String player1Color = scanner.nextLine();
-
-
-        System.out.println("What is player 2's name? ");
-        String player2Name = scanner.nextLine();
-        System.out.println("Pick a different color");
-        String player2Color = scanner.nextLine();
-
-        Player player1 = new Player(player1Name, player1Color, 1);
-
-        Player player2 = new Player(player2Name, player2Color, 2);
 
         board.setBoard();
 
@@ -57,7 +50,6 @@ public class ConnectFour {
         else {
             System.out.println(player2.getName() + " you won!");
         }
-
 
 
     }
