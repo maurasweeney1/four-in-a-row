@@ -15,7 +15,7 @@ public class Board {
         }
     }
 
-    public boolean placeToken(int playerNum, int column) {
+    public boolean placeToken(Player player, int column) {
         int index = checkIfValidPlace(column);
         if (index == -1) {
             return false;
