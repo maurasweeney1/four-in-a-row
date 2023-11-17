@@ -15,13 +15,13 @@ public class Board {
         }
     }
 
-    public boolean placeToken(int playerNum, int column) {
+    public boolean placeToken(Player player, int column) {
         int index = checkIfValidPlace(column);
         if (index == -1) {
             return false;
         }
         else {
-            board[index][column - 1] = playerNum;
+            board[index][column - 1] = player.getPlayerNum();
             return true;
         }
     }

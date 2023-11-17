@@ -43,10 +43,10 @@ public class ConnectFour {
             System.out.println("What column do you want?");
             Integer column = scanner.nextInt();
             if (roundCount % 2 == 1) {
-                board.placeToken(player1.getPlayerNum(), column);
+                board.placeToken(player1, column);
             }
             else {
-                board.placeToken(player2.getPlayerNum(), column);
+                board.placeToken(player2, column);
             }
             roundCount++;
             board.printBoard();
