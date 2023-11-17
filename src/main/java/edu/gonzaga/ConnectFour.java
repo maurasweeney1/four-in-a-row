@@ -32,17 +32,25 @@ public class ConnectFour {
 
         board.setBoard();
 
-        while (board.checkIfFourInARow()) {
+        while (!board.checkIfFourInARow()) {
             System.out.println("What column do you want?");
             Integer column = scanner.nextInt();
             if (roundCount % 2 == 1) {
                 board.placeToken(player1, column);
-            } else {
+            }
+            else {
                 board.placeToken(player2, column);
             }
             roundCount++;
             board.printBoard();
         }
+        if (roundCount % 2 == 1){
+            System.out.println(player1.getName() + " you won!");
+        }
+        else {
+            System.out.println(player2.getName() + " you won!");
+        }
+
 
     }
 }
