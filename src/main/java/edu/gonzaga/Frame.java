@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 class Frame extends JFrame {
     private static final int DEFAULT_WIDTH = 600;
-    private static final int DEFAULT_HEIGHT = 300;
+    private static final int DEFAULT_HEIGHT = 600;
 
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -44,18 +44,16 @@ class Frame extends JFrame {
         JPanel start = new JPanel();
 
         JLabel intro = new JLabel("Welcome to CONNECT4");
-        /*
-         * BufferedImage logo;
-         * JLabel picLabel = null;
-         * try {
-         * logo = ImageIO.read(new File("./images/Logo.png"));
-         * picLabel = new JLabel(new ImageIcon(logo));
-         * picLabel.setBounds(50, 130, 100, 150);
-         * title.add(picLabel);
-         * } catch (IOException e) {
-         * System.out.println("unable to find image");
-         * }
-         */
+        BufferedImage logo;
+        JLabel picLabel = null;
+        try {
+            logo = ImageIO.read(new File("/images/Logo.png"));
+            picLabel = new JLabel(new ImageIcon(logo));
+            picLabel.setBounds(50, 130, 100, 150);
+            title.add(picLabel);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+        }
 
         JLabel player1Name = new JLabel("Enter Player 1 Name: ");
         JTextField player1NameInput = new JTextField(10);
@@ -76,9 +74,12 @@ class Frame extends JFrame {
         startGameButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+                player1.setName(player1NameInput.getText());
+                player2.setName(player2NameInput.getText());
+                player2.setColor((String) player1ColorInput.getSelectedItem());
+                player2.setColor((String) player2ColorInput.getSelectedItem());
                 frame.getContentPane().removeAll();
                 frame.repaint();
-                // call showGameScreen
             }
         });
 
@@ -98,10 +99,5 @@ class Frame extends JFrame {
         frame.getContentPane().add(BorderLayout.EAST, player2Panel);
         frame.getContentPane().add(BorderLayout.SOUTH, start);
         frame.setVisible(true);
-
-        player1.setName(player1NameInput.getText());
-        player2.setName(player2NameInput.getText());
-        player2.setColor((String) player1ColorInput.getSelectedItem());
-        player2.setColor((String) player2ColorInput.getSelectedItem());
     }
 }
