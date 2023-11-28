@@ -14,14 +14,24 @@ package edu.gonzaga;
 
 import java.util.Scanner;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
 /** Main program class for launching your team's program. */
 public class ConnectFour {
+
     public static void main(String[] args) {
 
         Player player1 = new Player(1);
         Player player2 = new Player(2);
+        PlayerView playerView1 = new PlayerView(player1);
+        PlayerView playerView2 = new PlayerView(player2);
 
         Frame frame = new Frame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Connect Four");
+        frame.setVisible(true);
+
         frame.showStartScreen(player1, player2);
 
         Scanner scanner = new Scanner(System.in);
@@ -32,18 +42,39 @@ public class ConnectFour {
 
         board.setBoard();
 
+
+        frame.addButtonCallbackHandlers(board, player1, player2);
+
+        /*
+         * while (!board.checkIfFourInARow()) {
+         * System.out.println("What column do you want?");
+         * Integer column = scanner.nextInt();
+         * if (roundCount % 2 == 1) {
+         * board.placeToken(player1, column);
+         * } else {
+         * board.placeToken(player2, column);
+         * }
+         * roundCount++;≥
+         * board.printBoard();
+         * }
+         */
         while (!board.checkIfFourInARow()) {
-            frame.showGameScreen();
-            System.out.println("What column do you want?");
-            Integer column = scanner.nextInt();
             if (roundCount % 2 == 1) {
-                board.placeToken(player1, column);
-            }
-            else {
-                board.placeToken(player2, column);
+                player1.setCurrentPlayer(true);
+                player2.setCurrentPlayer(false);
+            } else {
+                player2.setCurrentPlayer(true);
+                player1.setCurrentPlayer(false);
             }
             roundCount++;
-            board.printBoard();
+        }
+
+        frame.hideGameScreen();
+
+        if (roundCount % 2 == 1) {
+            System.out.println(player1.getName() + " you won!");
+        } else {
+            System.out.println(player2.getName() + " you won!");
         }
         frame.hideGameScreen();
         
