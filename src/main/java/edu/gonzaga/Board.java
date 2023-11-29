@@ -1,10 +1,26 @@
 package edu.gonzaga;
 
+import java.awt.image.BufferedImage;
+
+import javax.swing.JLabel;
+
 public class Board {
     /** A 2D array for the columns and rows of the board */
     private Integer[][] board = new Integer[6][7];
+    private Token token;
+    private Integer roundCount;
 
     public Board() {
+        token = new Token();
+        roundCount = 0;
+    }
+
+    public Integer getRoundCount() {
+        return roundCount;
+    }
+
+    public BufferedImage getPlayerToken(Player player) {
+        return token.getPlayerToken(player);
     }
 
     public void setBoard() {
@@ -15,21 +31,26 @@ public class Board {
         }
     }
 
-    public boolean placeToken(Player player, int column) {
+    public int placeToken(Player player, int column) {
         int index = checkIfValidPlace(column);
         if (index == -1) {
             System.out.println(false);
-            return false;
         } else {
             board[index][column - 1] = player.getPlayerNum();
-            System.out.println("placed token at board[index][column - 1] for player " + player.getName());
-
-            return true;
         }
+        roundCount++;
+        return index;
     }
 
-    public void getToken(Player player) {
-        // return token color image based on player
+    public boolean isRowFull(int column) {
+        if (board[0][column - 1] != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public JLabel getToken(Player player) {
+        return token.returnTokenImage(player);
     }
 
     private int checkIfValidPlace(int column) {

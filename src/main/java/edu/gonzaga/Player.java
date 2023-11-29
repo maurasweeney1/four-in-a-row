@@ -1,8 +1,5 @@
 package edu.gonzaga;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 public class Player {
     /** Holds the player's number of wins, throughout each round */
     private Integer score = 0;
@@ -13,8 +10,6 @@ public class Player {
 
     private Integer playerNum;
 
-    private PropertyChangeSupport propertyChangeSupport;
-
     private boolean currentPlayer = false;
 
     public Player(Integer num) {
@@ -22,7 +17,6 @@ public class Player {
         this.color = "white";
         score = 0;
         this.playerNum = num;
-        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     public Player(String name, String color, Integer num) {
@@ -30,7 +24,6 @@ public class Player {
         this.color = color;
         score = 0;
         this.playerNum = num;
-        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     public boolean getIsCurrentPlayer() {
@@ -38,10 +31,7 @@ public class Player {
     }
 
     public void setCurrentPlayer(boolean currentPlayer) {
-        boolean oldValue = this.currentPlayer;
         this.currentPlayer = currentPlayer;
-        propertyChangeSupport.firePropertyChange("currentPlayer", oldValue,
-                currentPlayer);
     }
 
     public String getName() {
@@ -74,13 +64,4 @@ public class Player {
     public Integer getPlayerNum() {
         return playerNum;
     }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
 }

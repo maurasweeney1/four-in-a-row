@@ -10,7 +10,6 @@ import javax.swing.*;
 
 import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -48,6 +47,9 @@ class Frame extends JFrame {
     JButton col6Button = new JButton();
     JButton col7Button = new JButton();
 
+    int buttonCallbackRow = 0;
+    Player currentPlayer;
+
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
@@ -69,7 +71,6 @@ class Frame extends JFrame {
             title.add(intro);
         }
 
-
         String[] choices = { "{ SELECT COLOR }", "red", "yellow", "green", "orange", "black" };
         final JComboBox<String> player1ColorInput = new JComboBox<String>(choices);
         player1ColorInput.setVisible(true);
@@ -77,17 +78,27 @@ class Frame extends JFrame {
         final JComboBox<String> player2ColorInput = new JComboBox<String>(choices);
         player2ColorInput.setVisible(true);
 
+        JLabel errorLabel = new JLabel();
+
         startGameButton.setBackground(Color.green);
         startGameButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                player1.setName(player1NameInput.getText());
-                player2.setName(player2NameInput.getText());
-                player2.setColor((String) player1ColorInput.getSelectedItem());
-                player2.setColor((String) player2ColorInput.getSelectedItem());
-                getContentPane().removeAll();
-                repaint();
-                showGameScreen();
+                if ((String) player2ColorInput.getSelectedItem() == "{ SELECT COLOR }"
+                        || (String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
+                    errorLabel.setText("Please choose a color");
+                } else if ((String) player2ColorInput.getSelectedItem() == (String) player1ColorInput
+                        .getSelectedItem()) {
+                    errorLabel.setText("You cannot choose the same color");
+                } else {
+                    player1.setName(player1NameInput.getText());
+                    player2.setName(player2NameInput.getText());
+                    player1.setColor((String) player1ColorInput.getSelectedItem());
+                    player2.setColor((String) player2ColorInput.getSelectedItem());
+                    getContentPane().removeAll();
+                    repaint();
+                    showGameScreen();
+                }
 
             }
         });
@@ -100,6 +111,7 @@ class Frame extends JFrame {
         player1Panel.add(player1ColorInput);
         player2Panel.add(player2Color);
         player2Panel.add(player2ColorInput);
+        start.add(errorLabel);
         start.add(startGameButton);
 
         getContentPane().add(BorderLayout.NORTH, title);
@@ -170,16 +182,6 @@ class Frame extends JFrame {
                 cells[row][col] = label;
                 Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                 label.setBorder(border);
-                BufferedImage blank;
-                JLabel picLabel = null;
-                try {
-                    blank = ImageIO.read(new File("images/blank.png/"));
-                    picLabel = new JLabel(new ImageIcon(blank));
-                    picLabel.setBounds(1, 1, 1, 1);
-                    label.add(picLabel);
-                } catch (IOException e) {
-                    System.out.println("unable to find image");
-                }
                 board.add(label);
             }
         }
@@ -193,21 +195,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("button 1");
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 1)) {
+                    col1Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 1);
-                /*
-                 * cells[][] = getToken
-                 * cells[row][col] = label;
-                 * Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-                 * label.setBorder(border);
-                 * label.add(picLabel);
-                 */
             }
         });
 
@@ -215,13 +205,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 2)) {
+                    col2Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 2);
             }
         });
 
@@ -229,13 +215,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 3)) {
+                    col3Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 3);
             }
         });
 
@@ -243,13 +225,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 4)) {
+                    col4Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 4);
             }
         });
 
@@ -257,13 +235,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 5)) {
+                    col5Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 5);
             }
         });
 
@@ -271,13 +245,9 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 6)) {
+                    col6Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 6);
             }
         });
 
@@ -285,16 +255,36 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Player currentPlayer;
-                if (player1.getIsCurrentPlayer()) {
-                    currentPlayer = player1;
-                } else {
-                    currentPlayer = player2;
+                if (!canTakeTurn(board, player1, player2, 7)) {
+                    col7Button.removeActionListener(this);
                 }
-                board.placeToken(currentPlayer, 7);
             }
         });
+    }
 
+    private boolean canTakeTurn(Board board, Player player1, Player player2, Integer column) {
+        if (board.getRoundCount() % 2 == 0) {
+            player1.setCurrentPlayer(true);
+            player2.setCurrentPlayer(false);
+        } else {
+            player2.setCurrentPlayer(true);
+            player1.setCurrentPlayer(false);
+        }
+        if (player1.getIsCurrentPlayer()) {
+            currentPlayer = player1;
+        } else {
+            currentPlayer = player2;
+        }
+        buttonCallbackRow = board.placeToken(currentPlayer, column);
+        JLabel label = cells[buttonCallbackRow][column - 1];
+        label.setIcon(new ImageIcon(board.getPlayerToken(currentPlayer)));
 
+        if (buttonCallbackRow == 0) {
+            return false;
+        } else if (board.checkIfFourInARow()) {
+            // change screens
+            System.out.println(currentPlayer.getName() + " you won!");
+        }
+        return true;
     }
 }
