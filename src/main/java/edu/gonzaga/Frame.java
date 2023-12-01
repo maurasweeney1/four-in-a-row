@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 class Frame extends JFrame {
     private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 500;
+    private static final int DEFAULT_HEIGHT = 600;
 
     // showStartScreen()
     JPanel title = new JPanel();
@@ -52,6 +52,9 @@ class Frame extends JFrame {
     JLabel player2CPUpic = new JLabel();
     JLabel player2CPUTurn = new JLabel();
 
+    JPanel singleInstruction = new JPanel();
+    JPanel multiInstruction = new JPanel();
+
     // createGameBoard()
     JButton[] columnHeaders = new JButton[7];
     JLabel[][] cells = new JLabel[6][7];
@@ -76,7 +79,8 @@ class Frame extends JFrame {
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
-
+  
+  
     public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -190,9 +194,23 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
+        BufferedImage multiPlayerInstruction;
+        JLabel label = null;
+        try {
+            multiPlayerInstruction = ImageIO.read(new File("images/MultiPlayerInstructions.png/"));
+            label = new JLabel(new ImageIcon(new ImageIcon(multiPlayerInstruction).getImage().getScaledInstance(600,100, Image.SCALE_DEFAULT)));
+            label.setBounds(0,0,2,10);
+            multiInstruction.add(label);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel label2 = new JLabel("Welcome to CONNECT4");
+            multiInstruction.add(label2);
+        }
+
         getContentPane().add(BorderLayout.CENTER, title);
         getContentPane().add(BorderLayout.CENTER, player1Panel);
         getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, multiInstruction);
         getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
@@ -226,6 +244,7 @@ class Frame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if ((String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
                     errorLabel.setText("Please choose a color");
+
                 } else {
                     if (player1NameInput.getText().isEmpty()) {
                         player1.setName("Player " + player1.getPlayerNum());
@@ -235,6 +254,7 @@ class Frame extends JFrame {
                     player1.setColor((String) player1ColorInput.getSelectedItem());
                     getContentPane().removeAll();
                     repaint();
+
                     showGameScreen(board, player1, player2, computer);
                 }
             }
@@ -247,9 +267,23 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
+        BufferedImage singlePlayerInstruction;
+        JLabel label = null;
+        try {
+            singlePlayerInstruction = ImageIO.read(new File("images/SinglePlayerInstructions.png/"));
+            label = new JLabel(new ImageIcon(new ImageIcon(singlePlayerInstruction).getImage().getScaledInstance(700,150, Image.SCALE_DEFAULT)));
+            label.setBounds(0,0,2,10);
+            singleInstruction.add(label);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel label2 = new JLabel("Welcome to CONNECT4");
+            singleInstruction.add(label2);
+        }
+
         getContentPane().add(BorderLayout.CENTER, title);
         getContentPane().add(BorderLayout.CENTER, player1Panel);
         getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, singleInstruction);
         getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
@@ -416,6 +450,7 @@ class Frame extends JFrame {
         if (isMulti) {
             if (board.getRoundCount() % 2 == 0) {
                 currentPlayer = player1;
+
                 player1Turn.setVisible(false);
                 player2CPUTurn.setVisible(true);
             } else {
@@ -452,6 +487,7 @@ class Frame extends JFrame {
                 public void run() {
                     Integer computerColumn = computer.placeToken();
                     buttonCallbackRow = board.placeToken(computer, computerColumn);
+
                     JLabel CPUlabel = cells[buttonCallbackRow][computerColumn - 1];
                     CPUlabel.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(computer)).getImage()
                             .getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
@@ -459,6 +495,7 @@ class Frame extends JFrame {
             };
             long delay = 750L;
             timer.schedule(task, delay);
+
 
             if (buttonCallbackRow == 0) {
                 return false;
