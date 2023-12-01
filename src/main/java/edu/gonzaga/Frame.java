@@ -47,10 +47,10 @@ class Frame extends JFrame {
     JPanel player2CPUIconPanel = new JPanel();
 
     JLabel player1pic = new JLabel();
-    JTextArea player1Turn = new JTextArea();
+    JLabel player1Turn = new JLabel();
 
     JLabel player2CPUpic = new JLabel();
-    JTextArea player2CPUTurn = new JTextArea();
+    JLabel player2CPUTurn = new JLabel();
 
     // createGameBoard()
     JButton[] columnHeaders = new JButton[7];
@@ -160,8 +160,16 @@ class Frame extends JFrame {
                         .getSelectedItem()) {
                     errorLabel.setText("You cannot choose the same color");
                 } else {
-                    player1.setName(player1NameInput.getText());
-                    player2.setName(player2NameInput.getText());
+                    if (player1NameInput.getText().isEmpty()) {
+                        player1.setName("Player " + player1.getPlayerNum());
+                    } else {
+                        player1.setName(player1NameInput.getText());
+                    }
+                    if (player2NameInput.getText().isEmpty()) {
+                        player2.setName("Player " + player2.getPlayerNum());
+                    } else {
+                        player2.setName(player2NameInput.getText());
+                    }
                     player1.setColor((String) player1ColorInput.getSelectedItem());
                     player2.setColor((String) player2ColorInput.getSelectedItem());
                     getContentPane().removeAll();
@@ -219,7 +227,11 @@ class Frame extends JFrame {
                 if ((String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
                     errorLabel.setText("Please choose a color");
                 } else {
-                    player1.setName(player1NameInput.getText());
+                    if (player1NameInput.getText().isEmpty()) {
+                        player1.setName("Player " + player1.getPlayerNum());
+                    } else {
+                        player1.setName(player1NameInput.getText());
+                    }
                     player1.setColor((String) player1ColorInput.getSelectedItem());
                     getContentPane().removeAll();
                     repaint();
@@ -251,11 +263,13 @@ class Frame extends JFrame {
         player1IconPanel.setLayout(new BoxLayout(player1IconPanel, BoxLayout.PAGE_AXIS));
         player1IconPanel.add(player1pic);
         player1IconPanel.add(player1Turn);
+        player1Turn.setPreferredSize(new Dimension(20, 100));
         player1Turn.setVisible(true);
 
         player2CPUIconPanel.setLayout(new BoxLayout(player2CPUIconPanel, BoxLayout.PAGE_AXIS));
         player2CPUIconPanel.add(player2CPUpic);
         player2CPUIconPanel.add(player2CPUTurn);
+        player2CPUTurn.setPreferredSize(new Dimension(20, 100));
         player2CPUTurn.setVisible(false);
 
         createGameBoard(gamePanel);
@@ -500,17 +514,17 @@ class Frame extends JFrame {
     }
 
     private void setPlayerIcons(Board board, Player player1, Player player2CPU) {
-        player1pic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player1)).getImage().getScaledInstance(100,
-                100, Image.SCALE_DEFAULT)));
-        player1Turn.setText(player1.getName() + ",\n its your turn!");
+        player1pic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player1)).getImage().getScaledInstance(150,
+                150, Image.SCALE_DEFAULT)));
+        player1Turn.setText(player1.getName() + " its your turn!");
 
         player2CPUpic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player2CPU)).getImage()
-                .getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+                .getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
 
         if (isMulti) {
-            player2CPUTurn.setText(player2CPU.getName() + ",\n its your turn!");
+            player2CPUTurn.setText(player2CPU.getName() + " its your turn!");
         } else {
-            player2CPUTurn.setText("its the \ncomputer's turn!");
+            player2CPUTurn.setText("Its the computer's turn!");
         }
     }
 
