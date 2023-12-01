@@ -350,8 +350,6 @@ class Frame extends JFrame {
         tiePanel.add(imageLabel);
 
         getContentPane().add(BorderLayout.NORTH, textLabel);
-        // TODO ONLY PART I CANT FIGURE OUT IS HOW TO CENTER THE TEXT LABEL AT TOP
-        // TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
         getContentPane().add(tiePanel);
         setVisible(true);
 
@@ -373,8 +371,6 @@ class Frame extends JFrame {
         winPanel.add(imageLabel);
 
         getContentPane().add(BorderLayout.NORTH, textLabel);
-        // TODO ONLY PART I CANT FIGURE OUT IS HOW TO CENTER THE TEXT LABEL AT TOP
-        // TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
         getContentPane().add(winPanel);
         setVisible(true);
     }
