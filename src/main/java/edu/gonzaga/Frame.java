@@ -103,7 +103,6 @@ class Frame extends JFrame {
                     repaint();
                     showGameScreen();
                 }
-
             }
         });
 
@@ -116,6 +115,52 @@ class Frame extends JFrame {
         player2Panel.add(player2Color);
         player2Panel.add(player2ColorInput);
         start.add(errorLabel);
+        start.add(startGameButton);
+
+        getContentPane().add(BorderLayout.NORTH, title);
+        getContentPane().add(BorderLayout.WEST, player1Panel);
+        getContentPane().add(BorderLayout.EAST, player2Panel);
+        getContentPane().add(BorderLayout.SOUTH, start);
+        setVisible(true);
+    }
+
+    public void showStartScreenSinglePlayer(Player player1) {
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new FlowLayout());
+
+        BufferedImage logo;
+        JLabel picLabel = null;
+        try {
+            logo = ImageIO.read(new File("images/Logo.png/"));
+            picLabel = new JLabel(new ImageIcon(logo));
+            picLabel.setBounds(10, 10, 10, 15);
+            title.add(picLabel);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel intro = new JLabel("Welcome to CONNECT4");
+            title.add(intro);
+        }
+
+
+        String[] choices = { "{ SELECT COLOR }", "red", "yellow", "green", "orange", "black" };
+        final JComboBox<String> player1ColorInput = new JComboBox<String>(choices);
+        player1ColorInput.setVisible(true);
+
+        startGameButton.setBackground(Color.green);
+        startGameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                player1.setName(player1NameInput.getText());
+                player1.setColor((String) player1ColorInput.getSelectedItem());
+                getContentPane().removeAll();
+                repaint();
+                showGameScreen();
+            }
+        });
+
+        player1Panel.add(player1Name);
+        player1Panel.add(player1NameInput);
+        player1Panel.add(player1Color);
+        player1Panel.add(player1ColorInput);
         start.add(startGameButton);
 
         getContentPane().add(BorderLayout.NORTH, title);
