@@ -7,9 +7,9 @@ public class Player {
     private String color;
     /** Holds the player's name */
     private String name;
-
+    /** Holds whether the player is first or second */
     private Integer playerNum;
-
+    /** Holds whether or not this player is currently taking their turn */
     private boolean currentPlayer = false;
 
     public Player(Integer num) {
@@ -50,15 +50,8 @@ public class Player {
         this.color = color;
     }
 
-    public void updateScore(Integer score) {
-    }
-
     public Integer getScore() {
         return score;
-    }
-
-    public void placeToken(Integer column) {
-
     }
 
     public Integer getPlayerNum() {

@@ -47,8 +47,9 @@ class Frame extends JFrame {
     JButton col6Button = new JButton();
     JButton col7Button = new JButton();
 
-    int buttonCallbackRow = 0;
+    Integer buttonCallbackRow = 0;
     Player currentPlayer;
+    Integer numButtons = 7;
 
     // show winnerScreen()
     JPanel winScreenPanel = new JPanel();
@@ -136,13 +137,8 @@ class Frame extends JFrame {
         setVisible(true);
     }
 
-    public void hideGameScreen() {
-
-    }
-
     public void createGameBoard(JPanel panel) {
         board.setLayout(new GridLayout(7, 7, 2, 2));
-
         col1Button.setText("Column 1");
         columnHeaders[0] = col1Button;
         col1Button.setPreferredSize(new Dimension(50, 50));
@@ -296,20 +292,21 @@ class Frame extends JFrame {
         ImageIcon imageIcon = new ImageIcon("images/winScreenLogo.png");
         Image image = imageIcon.getImage();
 
-        Image scaledImage = image.getScaledInstance(300,300,Image.SCALE_SMOOTH);
+        Image scaledImage = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(scaledImage);
-        JLabel scaledImageLabel = new JLabel (new ImageIcon(scaledImage));
+        JLabel scaledImageLabel = new JLabel(new ImageIcon(scaledImage));
         JLabel imageLabel = new JLabel(imageIcon);
 
-        JLabel textLabel = new JLabel(player1.getName() + " and " + player2.getName() + " tied! Come back and play again soon!");
-        textLabel.setFont(new Font("Arial",Font.PLAIN, 25));
+        JLabel textLabel = new JLabel(
+                player1.getName() + " and " + player2.getName() + " tied! Come back and play again soon!");
+        textLabel.setFont(new Font("Arial", Font.PLAIN, 25));
 
         JPanel tiePanel = new JPanel();
         tiePanel.add(imageLabel);
 
         getContentPane().add(BorderLayout.NORTH, textLabel);
         // TODO ONLY PART I CANT FIGURE OUT IS HOW TO CENTER THE TEXT LABEL AT TOP
-        //TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
+        // TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
         getContentPane().add(tiePanel);
         setVisible(true);
 
@@ -319,23 +316,21 @@ class Frame extends JFrame {
         ImageIcon imageIcon = new ImageIcon("images/winScreenLogo.png");
         Image image = imageIcon.getImage();
 
-        Image scaledImage = image.getScaledInstance(300,300,Image.SCALE_SMOOTH);
+        Image scaledImage = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         imageIcon = new ImageIcon(scaledImage);
-        JLabel scaledImageLabel = new JLabel (new ImageIcon(scaledImage));
+        JLabel scaledImageLabel = new JLabel(new ImageIcon(scaledImage));
         JLabel imageLabel = new JLabel(imageIcon);
 
         JLabel textLabel = new JLabel("Congratulations! " + winner.getName() + " won! Come back and play soon!");
-        textLabel.setFont(new Font("Arial",Font.PLAIN, 25));
+        textLabel.setFont(new Font("Arial", Font.PLAIN, 25));
 
         JPanel winPanel = new JPanel();
         winPanel.add(imageLabel);
 
         getContentPane().add(BorderLayout.NORTH, textLabel);
         // TODO ONLY PART I CANT FIGURE OUT IS HOW TO CENTER THE TEXT LABEL AT TOP
-        //TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
+        // TODO DO WE NEED TO HAVE BUTTON THAT RETURNS TO MAIN SCREEN?
         getContentPane().add(winPanel);
         setVisible(true);
-
-
     }
 }

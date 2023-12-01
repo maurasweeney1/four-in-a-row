@@ -7,7 +7,12 @@ import javax.swing.JLabel;
 public class Board {
     /** A 2D array for the columns and rows of the board */
     private Integer[][] board = new Integer[6][7];
+    /**
+     * all tokens a player can have, holds each player's color's token on the board
+     */
     private Token token;
+    /** keeps track of the number of rounds to determine current player */
+
     private Integer roundCount;
 
     public Board() {
@@ -40,13 +45,7 @@ public class Board {
         }
         roundCount++;
         return index;
-    }
 
-    public boolean isRowFull(int column) {
-        if (board[0][column - 1] != 0) {
-            return true;
-        }
-        return false;
     }
 
     public JLabel getToken(Player player) {
@@ -73,6 +72,7 @@ public class Board {
                 if (placeOnBoard == 0) {
                     continue;
                 } else if (j + 3 < width && placeOnBoard == board[i][j + 1] && placeOnBoard == board[i][j + 2]
+
                         && placeOnBoard == board[i][j + 3]) { // looks right to see if there is four in a row
                     return true;
                 } else if (i > 0 && placeOnBoard == board[i - 1][j] && placeOnBoard == board[i - 2][j]
