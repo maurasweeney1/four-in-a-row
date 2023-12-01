@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 class Frame extends JFrame {
     private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 500;
+    private static final int DEFAULT_HEIGHT = 600;
 
     // showStartScreen()
     JPanel title = new JPanel();
@@ -51,6 +51,9 @@ class Frame extends JFrame {
 
     JLabel player2CPUpic = new JLabel();
     JTextArea player2CPUTurn = new JTextArea();
+
+    JPanel singleInstruction = new JPanel();
+    JPanel multiInstruction = new JPanel();
 
     // createGameBoard()
     JButton[] columnHeaders = new JButton[7];
@@ -183,9 +186,23 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
+        BufferedImage multiPlayerInstruction;
+        JLabel label = null;
+        try {
+            multiPlayerInstruction = ImageIO.read(new File("images/MultiPlayerInstructions.png/"));
+            label = new JLabel(new ImageIcon(new ImageIcon(multiPlayerInstruction).getImage().getScaledInstance(600,100, Image.SCALE_DEFAULT)));
+            label.setBounds(0,0,2,10);
+            multiInstruction.add(label);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel label2 = new JLabel("Welcome to CONNECT4");
+            multiInstruction.add(label2);
+        }
+
         getContentPane().add(BorderLayout.CENTER, title);
         getContentPane().add(BorderLayout.CENTER, player1Panel);
         getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, multiInstruction);
         getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
@@ -238,9 +255,23 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
+        BufferedImage singlePlayerInstruction;
+        JLabel label = null;
+        try {
+            singlePlayerInstruction = ImageIO.read(new File("images/SinglePlayerInstructions.png/"));
+            label = new JLabel(new ImageIcon(new ImageIcon(singlePlayerInstruction).getImage().getScaledInstance(700,150, Image.SCALE_DEFAULT)));
+            label.setBounds(0,0,2,10);
+            singleInstruction.add(label);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel label2 = new JLabel("Welcome to CONNECT4");
+            singleInstruction.add(label2);
+        }
+
         getContentPane().add(BorderLayout.CENTER, title);
         getContentPane().add(BorderLayout.CENTER, player1Panel);
         getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, singleInstruction);
         getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
