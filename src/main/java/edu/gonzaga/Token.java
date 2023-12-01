@@ -12,7 +12,7 @@ public class Token {
     /** Holds the player's chosen color */
     private String color;
 
-    BufferedImage yellow, black, green, orange, red;
+    BufferedImage yellow, black, green, orange, red, purple;
 
     public Token() {
 
@@ -34,7 +34,6 @@ public class Token {
         } catch (IOException e) {
             System.out.println("Cannot find green token image");
         }
-
         try {
             orange = ImageIO.read(new File("images/orangeToken.png/"));
         } catch (IOException e) {
@@ -44,6 +43,11 @@ public class Token {
             red = ImageIO.read(new File("images/redToken.png/"));
         } catch (IOException e) {
             System.out.println("Cannot find red token image");
+        }
+        try {
+            purple = ImageIO.read(new File("images/purpleToken.png/"));
+        } catch (IOException e) {
+            System.out.println("Cannot find purple token image");
         }
     }
 
@@ -57,17 +61,11 @@ public class Token {
             return green;
         } else if (player.getColor() == "orange") {
             return orange;
+        } else if (player.getColor() == "purple") {
+            return purple;
         } else {
             return black;
         }
-    }
-
-    public JLabel returnTokenImage(Player player) {
-        setTokens();
-        JLabel picLabel = null;
-        picLabel = new JLabel(new ImageIcon(getPlayerToken(player)));
-        picLabel.setBounds(10, 10, 10, 10);
-        return picLabel;
     }
 
     public String getColor() {

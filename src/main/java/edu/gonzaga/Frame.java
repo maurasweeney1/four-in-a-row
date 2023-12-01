@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 class Frame extends JFrame {
-    private static final int DEFAULT_WIDTH = 715;
+    private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 500;
 
     // showStartScreen()
@@ -42,9 +42,17 @@ class Frame extends JFrame {
 
     // showGameScreen()
     JPanel gamePanel = new JPanel();
+    Container gameLayout = getContentPane();
+    JPanel player1IconPanel = new JPanel();
+    JPanel player2CPUIconPanel = new JPanel();
+
+    JLabel player1pic = new JLabel();
+    JTextArea player1Turn = new JTextArea();
+
+    JLabel player2CPUpic = new JLabel();
+    JTextArea player2CPUTurn = new JTextArea();
 
     // createGameBoard()
-    JPanel board = new JPanel();
     JButton[] columnHeaders = new JButton[7];
     JLabel[][] cells = new JLabel[6][7];
 
@@ -69,9 +77,9 @@ class Frame extends JFrame {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer){
+    public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
-        contentPane.setLayout(new FlowLayout());
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
         BufferedImage logo;
         JLabel picLabel = null;
@@ -89,13 +97,12 @@ class Frame extends JFrame {
         playerPanel.add(playerVSplayerButton);
         cpuPanel.add(playerVsCPUButton);
 
-
         playerVSplayerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 isMulti = true;
                 getContentPane().removeAll();
                 repaint();
-                showStartScreen(player1, player2);
+                showStartScreen(board, player1, player2, computer);
             }
         });
 
@@ -104,22 +111,21 @@ class Frame extends JFrame {
                 isMulti = false;
                 getContentPane().removeAll();
                 repaint();
-                showStartScreenSinglePlayer(player1);
+                showStartScreenSinglePlayer(board, player1, player2, computer);
             }
         });
-    
 
-        getContentPane().add(BorderLayout.NORTH, modePanel);
-        getContentPane().add(BorderLayout.WEST, playerPanel);
-        getContentPane().add(BorderLayout.EAST, cpuPanel);
+        getContentPane().add(BorderLayout.CENTER, modePanel);
+        getContentPane().add(BorderLayout.CENTER, playerPanel);
+        getContentPane().add(BorderLayout.CENTER, cpuPanel);
         setVisible(true);
 
         return isMulti;
     }
 
-    public void showStartScreen(Player player1, Player player2) {
+    public void showStartScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
-        contentPane.setLayout(new FlowLayout());
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
         BufferedImage logo;
         JLabel picLabel = null;
@@ -160,7 +166,7 @@ class Frame extends JFrame {
                     player2.setColor((String) player2ColorInput.getSelectedItem());
                     getContentPane().removeAll();
                     repaint();
-                    showGameScreen();
+                    showGameScreen(board, player1, player2, computer);
                 }
             }
         });
@@ -176,16 +182,17 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
-        getContentPane().add(BorderLayout.NORTH, title);
-        getContentPane().add(BorderLayout.WEST, player1Panel);
-        getContentPane().add(BorderLayout.EAST, player2Panel);
-        getContentPane().add(BorderLayout.SOUTH, start);
+        getContentPane().add(BorderLayout.CENTER, title);
+        getContentPane().add(BorderLayout.CENTER, player1Panel);
+        getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
 
-    public void showStartScreenSinglePlayer(Player player1) {
+    public void showStartScreenSinglePlayer(Board board, Player player1, Player player2, CPU computer) {
+        setPlayerIcons(board, player1, computer);
         Container contentPane = getContentPane();
-        contentPane.setLayout(new FlowLayout());
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
         BufferedImage logo;
         JLabel picLabel = null;
@@ -200,7 +207,6 @@ class Frame extends JFrame {
             title.add(intro);
         }
 
-
         String[] choices = { "{ SELECT COLOR }", "red", "yellow", "green", "orange", "black" };
         final JComboBox<String> player1ColorInput = new JComboBox<String>(choices);
         player1ColorInput.setVisible(true);
@@ -212,13 +218,12 @@ class Frame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if ((String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
                     errorLabel.setText("Please choose a color");
-                }
-                else {
+                } else {
                     player1.setName(player1NameInput.getText());
                     player1.setColor((String) player1ColorInput.getSelectedItem());
                     getContentPane().removeAll();
                     repaint();
-                    showGameScreen();
+                    showGameScreen(board, player1, player2, computer);
                 }
             }
         });
@@ -230,26 +235,46 @@ class Frame extends JFrame {
         start.add(errorLabel);
         start.add(startGameButton);
 
-        getContentPane().add(BorderLayout.NORTH, title);
-        getContentPane().add(BorderLayout.WEST, player1Panel);
-        getContentPane().add(BorderLayout.EAST, player2Panel);
-        getContentPane().add(BorderLayout.SOUTH, start);
+        getContentPane().add(BorderLayout.CENTER, title);
+        getContentPane().add(BorderLayout.CENTER, player1Panel);
+        getContentPane().add(BorderLayout.CENTER, player2Panel);
+        getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
 
-    public void showGameScreen() {
+    public void showGameScreen(Board board, Player player1, Player player2, CPU computer) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Connect4");
 
-        Container gameLayout = getContentPane();
         gameLayout.setLayout(new BorderLayout());
 
+        player1IconPanel.setLayout(new BoxLayout(player1IconPanel, BoxLayout.PAGE_AXIS));
+        player1IconPanel.add(player1pic);
+        player1IconPanel.add(player1Turn);
+        player1Turn.setVisible(true);
+
+        player2CPUIconPanel.setLayout(new BoxLayout(player2CPUIconPanel, BoxLayout.PAGE_AXIS));
+        player2CPUIconPanel.add(player2CPUpic);
+        player2CPUIconPanel.add(player2CPUTurn);
+        player2CPUTurn.setVisible(false);
+
         createGameBoard(gamePanel);
+
         gameLayout.add(gamePanel, BorderLayout.CENTER);
+        gameLayout.add(player1IconPanel, BorderLayout.WEST);
+        gameLayout.add(player2CPUIconPanel, BorderLayout.EAST);
+
+        if (isMulti) {
+            setPlayerIcons(board, player1, player2);
+        } else {
+            setPlayerIcons(board, player1, computer);
+        }
+
         setVisible(true);
     }
 
     public void createGameBoard(JPanel panel) {
+        JPanel board = new JPanel();
         board.setLayout(new GridLayout(7, 7, 2, 2));
         col1Button.setText("Column 1");
         columnHeaders[0] = col1Button;
@@ -377,17 +402,27 @@ class Frame extends JFrame {
         if (isMulti) {
             if (board.getRoundCount() % 2 == 0) {
                 currentPlayer = player1;
+                player1Turn.setVisible(false);
+                player2CPUTurn.setVisible(true);
             } else {
                 currentPlayer = player2;
+                player1Turn.setVisible(true);
+                player2CPUTurn.setVisible(false);
             }
-        }
-        else {
+        } else {
             currentPlayer = player1;
+            if (board.getRoundCount() % 2 == 0) {
+                player1Turn.setVisible(false);
+                player2CPUTurn.setVisible(true);
+            } else {
+                player1Turn.setVisible(true);
+                player2CPUTurn.setVisible(false);
+            }
         }
         buttonCallbackRow = board.placeToken(currentPlayer, column);
         JLabel label = cells[buttonCallbackRow][column - 1];
-        label.setIcon(new ImageIcon(board.getPlayerToken(currentPlayer)));
-
+        label.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(currentPlayer)).getImage().getScaledInstance(50,
+                50, Image.SCALE_DEFAULT)));
         if (buttonCallbackRow == 0) {
             return false;
         } else if (board.checkIfFourInARow()) {
@@ -403,13 +438,13 @@ class Frame extends JFrame {
                 public void run() {
                     Integer computerColumn = computer.placeToken();
                     buttonCallbackRow = board.placeToken(computer, computerColumn);
-                    JLabel CPUlabel = cells[buttonCallbackRow][computerColumn-1];
-                    CPUlabel.setIcon(new ImageIcon(board.getPlayerToken(computer)));
+                    JLabel CPUlabel = cells[buttonCallbackRow][computerColumn - 1];
+                    CPUlabel.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(computer)).getImage()
+                            .getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
                 }
             };
             long delay = 750L;
             timer.schedule(task, delay);
-            
 
             if (buttonCallbackRow == 0) {
                 return false;
@@ -463,4 +498,20 @@ class Frame extends JFrame {
         getContentPane().add(winPanel);
         setVisible(true);
     }
+
+    private void setPlayerIcons(Board board, Player player1, Player player2CPU) {
+        player1pic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player1)).getImage().getScaledInstance(100,
+                100, Image.SCALE_DEFAULT)));
+        player1Turn.setText(player1.getName() + ",\n its your turn!");
+
+        player2CPUpic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player2CPU)).getImage()
+                .getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+
+        if (isMulti) {
+            player2CPUTurn.setText(player2CPU.getName() + ",\n its your turn!");
+        } else {
+            player2CPUTurn.setText("its the \ncomputer's turn!");
+        }
+    }
+
 }
