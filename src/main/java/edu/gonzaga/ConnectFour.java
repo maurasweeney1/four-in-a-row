@@ -34,7 +34,5 @@ public class ConnectFour {
         board.setBoard();
 
         frame.addButtonCallbackHandlers(board, player1, player2);
-
-        frame.hideGameScreen();
     }
 }

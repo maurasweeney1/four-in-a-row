@@ -47,9 +47,6 @@ public class Token {
         }
     }
 
-    public void setColor() {
-    }
-
     public BufferedImage getPlayerToken(Player player) {
         setTokens();
         if (player.getColor() == "red") {

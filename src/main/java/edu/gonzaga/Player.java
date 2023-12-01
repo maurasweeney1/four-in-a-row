@@ -2,27 +2,28 @@ package edu.gonzaga;
 
 public class Player {
     /** Holds the player's number of wins, throughout each round */
-    private Integer score = 0;
     /** Holds the player's chosen color */
-    private String color;
+    protected String color;
     /** Holds the player's name */
-    private String name;
+    protected String name;
 
-    private Integer playerNum;
+    protected Integer playerNum;
 
-    private boolean currentPlayer = false;
+    protected boolean currentPlayer = false;
+
+    public Player() {
+
+    }
 
     public Player(Integer num) {
         this.name = "Unknown Player";
         this.color = "white";
-        score = 0;
         this.playerNum = num;
     }
 
     public Player(String name, String color, Integer num) {
         this.name = name;
         this.color = color;
-        score = 0;
         this.playerNum = num;
     }
 
@@ -48,17 +49,6 @@ public class Player {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public void updateScore(Integer score) {
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void placeToken(Integer column) {
-
     }
 
     public Integer getPlayerNum() {

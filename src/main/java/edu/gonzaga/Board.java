@@ -7,7 +7,12 @@ import javax.swing.JLabel;
 public class Board {
     /** A 2D array for the columns and rows of the board */
     private Integer[][] board = new Integer[6][7];
+    /**
+     * all tokens a player can have, holds each player's color's token on the board
+     */
     private Token token;
+    /** keeps track of the number of rounds to determine current player */
+
     private Integer roundCount;
 
     public Board() {
@@ -40,13 +45,7 @@ public class Board {
         }
         roundCount++;
         return index;
-    }
 
-    public boolean isRowFull(int column) {
-        if (board[0][column - 1] != 0) {
-            return true;
-        }
-        return false;
     }
 
     public JLabel getToken(Player player) {
