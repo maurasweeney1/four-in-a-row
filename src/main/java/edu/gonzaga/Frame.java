@@ -76,7 +76,8 @@ class Frame extends JFrame {
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
-
+  
+  
     public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -218,11 +219,13 @@ class Frame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if ((String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
                     errorLabel.setText("Please choose a color");
+
                 } else {
                     player1.setName(player1NameInput.getText());
                     player1.setColor((String) player1ColorInput.getSelectedItem());
                     getContentPane().removeAll();
                     repaint();
+
                     showGameScreen(board, player1, player2, computer);
                 }
             }
@@ -402,6 +405,7 @@ class Frame extends JFrame {
         if (isMulti) {
             if (board.getRoundCount() % 2 == 0) {
                 currentPlayer = player1;
+
                 player1Turn.setVisible(false);
                 player2CPUTurn.setVisible(true);
             } else {
@@ -438,6 +442,7 @@ class Frame extends JFrame {
                 public void run() {
                     Integer computerColumn = computer.placeToken();
                     buttonCallbackRow = board.placeToken(computer, computerColumn);
+
                     JLabel CPUlabel = cells[buttonCallbackRow][computerColumn - 1];
                     CPUlabel.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(computer)).getImage()
                             .getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
@@ -445,6 +450,7 @@ class Frame extends JFrame {
             };
             long delay = 750L;
             timer.schedule(task, delay);
+
 
             if (buttonCallbackRow == 0) {
                 return false;
