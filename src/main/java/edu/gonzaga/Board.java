@@ -65,20 +65,25 @@ public class Board {
                 int placeOnBoard = board[i][j];
                 if (placeOnBoard == 0) {
                     continue;
-                } else if (j + 3 < width && placeOnBoard == board[i][j + 1] && placeOnBoard == board[i][j + 2]
-
-                        && placeOnBoard == board[i][j + 3]) { // looks right to see if there is four in a row
+                }
+                // checks for horizontal four in a row
+                if (((j + 3) < width) && placeOnBoard == board[i][j + 1] && placeOnBoard == board[i][j + 2]
+                        && placeOnBoard == board[i][j + 3]) {
                     return true;
-                } else if (i > 0 && placeOnBoard == board[i - 1][j] && placeOnBoard == board[i - 2][j]
-                        && placeOnBoard == board[i - 3][j]) { // looks up
+                }
+                // checks for vertical four in a row
+                if ((i > 2) && (placeOnBoard == board[i - 1][j]) && (placeOnBoard == board[i - 2][j])
+                        && (placeOnBoard == board[i - 3][j])) {
                     return true;
-                } else if (j + 3 < width && i > 0 && placeOnBoard == board[i - 1][j + 1]
-                        && placeOnBoard == board[i - 2][j + 2]
-                        && placeOnBoard == board[i - 3][j + 3]) { // looks up and to the right
+                }
+                if (((j + 3) < width) && (i > 2) && (placeOnBoard == board[i - 1][j + 1])
+                        && (placeOnBoard == board[i - 2][j + 2])
+                        && (placeOnBoard == board[i - 3][j + 3])) {
                     return true;
-                } else if (j - 3 >= 0 && i > 0 && placeOnBoard == board[i - 1][j - 1]
-                        && placeOnBoard == board[i - 2][j - 2]
-                        && placeOnBoard == board[i - 3][j - 3]) { // looks up and to the left
+                }
+                if ((j > 2) && (i > 2)
+                        && ((placeOnBoard == board[i - 1][j - 1]) && (placeOnBoard == board[i - 2][j - 2])
+                                && (placeOnBoard == board[i - 3][j - 3]))) {
                     return true;
                 }
             }

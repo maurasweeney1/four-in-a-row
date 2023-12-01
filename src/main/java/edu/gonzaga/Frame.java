@@ -484,7 +484,19 @@ class Frame extends JFrame {
         label.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(currentPlayer)).getImage().getScaledInstance(50,
                 50, Image.SCALE_DEFAULT)));
         if (buttonCallbackRow == 0) {
-            return false;
+            System.out.println(numButtons);
+            if (numButtons == 1) {
+                getContentPane().removeAll();
+                repaint();
+                if (isMulti) {
+                    showTieScreen(player1, player2);
+                } else {
+                    showTieScreen(player1, computer);
+                }
+            } else {
+                numButtons--;
+                return false;
+            }
         } else if (board.checkIfFourInARow()) {
             getContentPane().removeAll();
             repaint();
