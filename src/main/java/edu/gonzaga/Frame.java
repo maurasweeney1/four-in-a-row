@@ -484,7 +484,6 @@ class Frame extends JFrame {
         label.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(currentPlayer)).getImage().getScaledInstance(50,
                 50, Image.SCALE_DEFAULT)));
         if (buttonCallbackRow == 0) {
-            System.out.println(numButtons);
             if (numButtons == 1) {
                 getContentPane().removeAll();
                 repaint();
@@ -556,7 +555,7 @@ class Frame extends JFrame {
         getContentPane().add(BorderLayout.NORTH, textLabel);
         getContentPane().add(tiePanel);
         setVisible(true);
-
+        pack();
     }
 
     public void showWinnerScreen(Player winner) {
@@ -576,6 +575,7 @@ class Frame extends JFrame {
 
         getContentPane().add(BorderLayout.NORTH, textLabel);
         getContentPane().add(winPanel);
+        pack();
         setVisible(true);
     }
 
