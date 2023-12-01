@@ -12,6 +12,8 @@ import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Frame extends JFrame {
     private static final int DEFAULT_WIDTH = 715;
@@ -30,6 +32,13 @@ class Frame extends JFrame {
     JLabel player1Color = new JLabel("Enter Player 1 Color: ");
     JLabel player2Color = new JLabel("Enter Player 2 Color: ");
     JButton startGameButton = new JButton("Start Game");
+
+    // showSelectModeScreen()
+    JPanel modePanel = new JPanel();
+    JPanel playerPanel = new JPanel();
+    JPanel cpuPanel = new JPanel();
+    JButton playerVSplayerButton = new JButton("Player vs Player");
+    JButton playerVsCPUButton = new JButton("Player vs CPU");
 
     // showGameScreen()
     JPanel gamePanel = new JPanel();
@@ -54,8 +63,58 @@ class Frame extends JFrame {
     // show winnerScreen()
     JPanel winScreenPanel = new JPanel();
 
+    boolean isMulti;
+
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer){
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new FlowLayout());
+
+        BufferedImage logo;
+        JLabel picLabel = null;
+        try {
+            logo = ImageIO.read(new File("images/Logo.png/"));
+            picLabel = new JLabel(new ImageIcon(logo));
+            picLabel.setBounds(10, 10, 10, 15);
+            modePanel.add(picLabel);
+        } catch (IOException e) {
+            System.out.println("unable to find image");
+            JLabel intro = new JLabel("Welcome to CONNECT4");
+            modePanel.add(intro);
+        }
+
+        playerPanel.add(playerVSplayerButton);
+        cpuPanel.add(playerVsCPUButton);
+
+
+        playerVSplayerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                isMulti = true;
+                getContentPane().removeAll();
+                repaint();
+                showStartScreen(player1, player2);
+            }
+        });
+
+        playerVsCPUButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                isMulti = false;
+                getContentPane().removeAll();
+                repaint();
+                showStartScreenSinglePlayer(player1);
+            }
+        });
+    
+
+        getContentPane().add(BorderLayout.NORTH, modePanel);
+        getContentPane().add(BorderLayout.WEST, playerPanel);
+        getContentPane().add(BorderLayout.EAST, cpuPanel);
+        setVisible(true);
+
+        return isMulti;
     }
 
     public void showStartScreen(Player player1, Player player2) {
@@ -146,14 +205,21 @@ class Frame extends JFrame {
         final JComboBox<String> player1ColorInput = new JComboBox<String>(choices);
         player1ColorInput.setVisible(true);
 
+        JLabel errorLabel = new JLabel();
+
         startGameButton.setBackground(Color.green);
         startGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                player1.setName(player1NameInput.getText());
-                player1.setColor((String) player1ColorInput.getSelectedItem());
-                getContentPane().removeAll();
-                repaint();
-                showGameScreen();
+                if ((String) player1ColorInput.getSelectedItem() == "{ SELECT COLOR }") {
+                    errorLabel.setText("Please choose a color");
+                }
+                else {
+                    player1.setName(player1NameInput.getText());
+                    player1.setColor((String) player1ColorInput.getSelectedItem());
+                    getContentPane().removeAll();
+                    repaint();
+                    showGameScreen();
+                }
             }
         });
 
@@ -161,6 +227,7 @@ class Frame extends JFrame {
         player1Panel.add(player1NameInput);
         player1Panel.add(player1Color);
         player1Panel.add(player1ColorInput);
+        start.add(errorLabel);
         start.add(startGameButton);
 
         getContentPane().add(BorderLayout.NORTH, title);
@@ -233,13 +300,13 @@ class Frame extends JFrame {
         panel.add(board);
     }
 
-    public void addButtonCallbackHandlers(Board board, Player player1, Player player2) {
+    public void addButtonCallbackHandlers(Board board, Player player1, Player player2, CPU computer) {
 
         col1Button.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 1)) {
+                if (!canTakeTurn(board, player1, player2, 1, computer)) {
                     col1Button.removeActionListener(this);
                 }
             }
@@ -249,7 +316,7 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 2)) {
+                if (!canTakeTurn(board, player1, player2, 2, computer)) {
                     col2Button.removeActionListener(this);
                 }
             }
@@ -259,7 +326,7 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 3)) {
+                if (!canTakeTurn(board, player1, player2, 3, computer)) {
                     col3Button.removeActionListener(this);
                 }
             }
@@ -269,7 +336,7 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 4)) {
+                if (!canTakeTurn(board, player1, player2, 4, computer)) {
                     col4Button.removeActionListener(this);
                 }
             }
@@ -279,7 +346,7 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 5)) {
+                if (!canTakeTurn(board, player1, player2, 5, computer)) {
                     col5Button.removeActionListener(this);
                 }
             }
@@ -289,7 +356,7 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 6)) {
+                if (!canTakeTurn(board, player1, player2, 6, computer)) {
                     col6Button.removeActionListener(this);
                 }
             }
@@ -299,25 +366,23 @@ class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!canTakeTurn(board, player1, player2, 7)) {
+                if (!canTakeTurn(board, player1, player2, 7, computer)) {
                     col7Button.removeActionListener(this);
                 }
             }
         });
     }
 
-    private boolean canTakeTurn(Board board, Player player1, Player player2, Integer column) {
-        if (board.getRoundCount() % 2 == 0) {
-            player1.setCurrentPlayer(true);
-            player2.setCurrentPlayer(false);
-        } else {
-            player2.setCurrentPlayer(true);
-            player1.setCurrentPlayer(false);
+    private boolean canTakeTurn(Board board, Player player1, Player player2, Integer column, CPU computer) {
+        if (isMulti) {
+            if (board.getRoundCount() % 2 == 0) {
+                currentPlayer = player1;
+            } else {
+                currentPlayer = player2;
+            }
         }
-        if (player1.getIsCurrentPlayer()) {
+        else {
             currentPlayer = player1;
-        } else {
-            currentPlayer = player2;
         }
         buttonCallbackRow = board.placeToken(currentPlayer, column);
         JLabel label = cells[buttonCallbackRow][column - 1];
@@ -329,6 +394,30 @@ class Frame extends JFrame {
             getContentPane().removeAll();
             repaint();
             showWinnerScreen(currentPlayer);
+            return true;
+        }
+
+        if (!isMulti) {
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    Integer computerColumn = computer.placeToken();
+                    buttonCallbackRow = board.placeToken(computer, computerColumn);
+                    JLabel CPUlabel = cells[buttonCallbackRow][computerColumn-1];
+                    CPUlabel.setIcon(new ImageIcon(board.getPlayerToken(computer)));
+                }
+            };
+            long delay = 750L;
+            timer.schedule(task, delay);
+            
+
+            if (buttonCallbackRow == 0) {
+                return false;
+            } else if (board.checkIfFourInARow()) {
+                getContentPane().removeAll();
+                repaint();
+                showWinnerScreen(computer);
+            }
         }
         return true;
     }

@@ -14,9 +14,10 @@ public class CPU extends Player{
         return color;
     }
 
-    public int placeToken(Integer column) {
+    public int placeToken() {
         Random rand = new Random();
         int randCol = rand.nextInt(7);
+        randCol++;
         return randCol;
     }
 

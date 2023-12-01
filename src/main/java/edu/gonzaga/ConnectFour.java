@@ -18,21 +18,21 @@ import javax.swing.JFrame;
 public class ConnectFour {
 
     public static void main(String[] args) {
-
-        Player player1 = new Player(1);
-        Player player2 = new Player(2);
-
         Frame frame = new Frame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Connect Four");
         frame.setVisible(true);
 
-        frame.showStartScreen(player1, player2);
-
         Board board = new Board();
 
         board.setBoard();
 
-        frame.addButtonCallbackHandlers(board, player1, player2);
+        Player player1 = new Player(1);
+        Player player2 = new Player(2);
+        CPU computer = new CPU(3);
+
+        frame.showSelectModeScreen(board, player1, player2, computer);
+
+        frame.addButtonCallbackHandlers(board, player1, player2, computer);
     }
 }

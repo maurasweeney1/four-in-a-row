@@ -9,8 +9,6 @@ public class Player {
 
     protected Integer playerNum;
 
-    protected boolean currentPlayer = false;
-
     public Player() {
 
     }
@@ -25,14 +23,6 @@ public class Player {
         this.name = name;
         this.color = color;
         this.playerNum = num;
-    }
-
-    public boolean getIsCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(boolean currentPlayer) {
-        this.currentPlayer = currentPlayer;
     }
 
     public String getName() {
