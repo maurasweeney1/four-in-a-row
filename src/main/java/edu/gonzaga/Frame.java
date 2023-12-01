@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,9 +49,11 @@ class Frame extends JFrame {
 
     JLabel player1pic = new JLabel();
     JLabel player1Turn = new JLabel();
+    JLabel player1InspirationMessage = new JLabel();
 
     JLabel player2CPUpic = new JLabel();
     JLabel player2CPUTurn = new JLabel();
+    JLabel player2InspirationMessage = new JLabel();
 
     JPanel singleInstruction = new JPanel();
     JPanel multiInstruction = new JPanel();
@@ -79,8 +82,7 @@ class Frame extends JFrame {
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
-  
-  
+
     public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -198,8 +200,9 @@ class Frame extends JFrame {
         JLabel label = null;
         try {
             multiPlayerInstruction = ImageIO.read(new File("images/MultiPlayerInstructions.png/"));
-            label = new JLabel(new ImageIcon(new ImageIcon(multiPlayerInstruction).getImage().getScaledInstance(600,100, Image.SCALE_DEFAULT)));
-            label.setBounds(0,0,2,10);
+            label = new JLabel(new ImageIcon(
+                    new ImageIcon(multiPlayerInstruction).getImage().getScaledInstance(600, 100, Image.SCALE_DEFAULT)));
+            label.setBounds(0, 0, 2, 10);
             multiInstruction.add(label);
         } catch (IOException e) {
             System.out.println("unable to find image");
@@ -271,8 +274,9 @@ class Frame extends JFrame {
         JLabel label = null;
         try {
             singlePlayerInstruction = ImageIO.read(new File("images/SinglePlayerInstructions.png/"));
-            label = new JLabel(new ImageIcon(new ImageIcon(singlePlayerInstruction).getImage().getScaledInstance(700,150, Image.SCALE_DEFAULT)));
-            label.setBounds(0,0,2,10);
+            label = new JLabel(new ImageIcon(new ImageIcon(singlePlayerInstruction).getImage().getScaledInstance(700,
+                    150, Image.SCALE_DEFAULT)));
+            label.setBounds(0, 0, 2, 10);
             singleInstruction.add(label);
         } catch (IOException e) {
             System.out.println("unable to find image");
@@ -297,12 +301,14 @@ class Frame extends JFrame {
         player1IconPanel.setLayout(new BoxLayout(player1IconPanel, BoxLayout.PAGE_AXIS));
         player1IconPanel.add(player1pic);
         player1IconPanel.add(player1Turn);
+        player1IconPanel.add(player1InspirationMessage);
         player1Turn.setPreferredSize(new Dimension(20, 100));
         player1Turn.setVisible(true);
 
         player2CPUIconPanel.setLayout(new BoxLayout(player2CPUIconPanel, BoxLayout.PAGE_AXIS));
         player2CPUIconPanel.add(player2CPUpic);
         player2CPUIconPanel.add(player2CPUTurn);
+        player2CPUIconPanel.add(player2InspirationMessage);
         player2CPUTurn.setPreferredSize(new Dimension(20, 100));
         player2CPUTurn.setVisible(false);
 
@@ -324,37 +330,37 @@ class Frame extends JFrame {
     public void createGameBoard(JPanel panel) {
         JPanel board = new JPanel();
         board.setLayout(new GridLayout(7, 7, 2, 2));
-        col1Button.setText("Column 1");
+        col1Button.setText("↓");
         columnHeaders[0] = col1Button;
         col1Button.setPreferredSize(new Dimension(50, 50));
         board.add(col1Button);
 
-        col2Button.setText("Column 2");
+        col2Button.setText("↓");
         columnHeaders[1] = col2Button;
         col2Button.setPreferredSize(new Dimension(50, 50));
         board.add(col2Button);
 
-        col3Button.setText("Column 3");
+        col3Button.setText("↓");
         columnHeaders[2] = col3Button;
         col3Button.setPreferredSize(new Dimension(50, 50));
         board.add(col3Button);
 
-        col4Button.setText("Column 4");
+        col4Button.setText("↓");
         columnHeaders[3] = col4Button;
         col4Button.setPreferredSize(new Dimension(50, 50));
         board.add(col4Button);
 
-        col5Button.setText("Column 5");
+        col5Button.setText("↓");
         columnHeaders[4] = col5Button;
         col5Button.setPreferredSize(new Dimension(50, 50));
         board.add(col5Button);
 
-        col6Button.setText("Column 6");
+        col6Button.setText("↓");
         columnHeaders[5] = col6Button;
         col6Button.setPreferredSize(new Dimension(50, 50));
         board.add(col6Button);
 
-        col7Button.setText("Column 7");
+        col7Button.setText("↓");
         columnHeaders[6] = col7Button;
         col7Button.setPreferredSize(new Dimension(50, 50));
         board.add(col7Button);
@@ -450,10 +456,15 @@ class Frame extends JFrame {
         if (isMulti) {
             if (board.getRoundCount() % 2 == 0) {
                 currentPlayer = player1;
-
                 player1Turn.setVisible(false);
                 player2CPUTurn.setVisible(true);
+                player1InspirationMessage.setVisible(true);
+                player2InspirationMessage.setVisible(false);
+                player1InspirationMessage.setText(setInspirationalMessage());
             } else {
+                player2InspirationMessage.setVisible(true);
+                player1InspirationMessage.setVisible(false);
+                player2InspirationMessage.setText(setInspirationalMessage());
                 currentPlayer = player2;
                 player1Turn.setVisible(true);
                 player2CPUTurn.setVisible(false);
@@ -482,6 +493,10 @@ class Frame extends JFrame {
         }
 
         if (!isMulti) {
+            player1InspirationMessage.setVisible(true);
+            player1InspirationMessage.setText(setInspirationalMessage());
+            player1Turn.setVisible(false);
+            player2CPUTurn.setVisible(true);
             Timer timer = new Timer();
             TimerTask task = new TimerTask() {
                 public void run() {
@@ -491,11 +506,13 @@ class Frame extends JFrame {
                     JLabel CPUlabel = cells[buttonCallbackRow][computerColumn - 1];
                     CPUlabel.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(computer)).getImage()
                             .getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+                    player1Turn.setVisible(true);
+                    player2CPUTurn.setVisible(false);
+                    player1InspirationMessage.setVisible(false);
                 }
             };
             long delay = 750L;
             timer.schedule(task, delay);
-
 
             if (buttonCallbackRow == 0) {
                 return false;
@@ -565,4 +582,11 @@ class Frame extends JFrame {
         }
     }
 
+    private String setInspirationalMessage() {
+        String[] messages = { "Great move!", "Keep it up!", "Amazing!", "You can do it!", "Good strategy!",
+                "Nice!", "Very impressive!", "Genius!", "Well done!", "Nice one!", "You're a star!" };
+        Random rand = new Random();
+        int randIndex = rand.nextInt(10);
+        return messages[randIndex];
+    }
 }
