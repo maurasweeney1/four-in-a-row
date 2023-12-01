@@ -324,7 +324,7 @@ class Frame extends JFrame {
         JLabel scaledImageLabel = new JLabel (new ImageIcon(scaledImage));
         JLabel imageLabel = new JLabel(imageIcon);
 
-        JLabel textLabel = new JLabel("Congradulations! " + winner.getName() + " won! Come back and play soon!");
+        JLabel textLabel = new JLabel("Congratulations! " + winner.getName() + " won! Come back and play soon!");
         textLabel.setFont(new Font("Arial",Font.PLAIN, 25));
 
         JPanel winPanel = new JPanel();
