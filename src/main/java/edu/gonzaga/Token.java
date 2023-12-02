@@ -12,12 +12,21 @@ public class Token {
     /** Holds the player's chosen color */
     private String color;
 
+
+    /* Holds the images for each color */
     BufferedImage yellow, black, green, orange, red, purple;
+
 
     public Token() {
 
     }
 
+     /**
+    * sets the token image for each color
+    *
+    * @param none
+    * @return none
+    */
     public void setTokens() {
         try {
             yellow = ImageIO.read(new File("images/yellowToken.png/"));
@@ -51,6 +60,12 @@ public class Token {
         }
     }
 
+    /**
+    * gets the correct token image for the Player's color
+    *
+    * @param Player object that holds a color
+    * @return token image
+    */
     public BufferedImage getPlayerToken(Player player) {
         setTokens();
         if (player.getColor() == "red") {
@@ -68,6 +83,27 @@ public class Token {
         }
     }
 
+
+    /**
+    * gets the token image for the player
+    *
+    * @param 
+    * @return 
+    */
+    public JLabel returnTokenImage(Player player) {
+        setTokens();
+        JLabel picLabel = null;
+        picLabel = new JLabel(new ImageIcon(getPlayerToken(player)));
+        picLabel.setBounds(10, 10, 10, 10);
+        return picLabel;
+    }
+
+    /**
+    * gets the color
+    *
+    * @param none
+    * @return String for the color
+    */
     public String getColor() {
         return color;
     }

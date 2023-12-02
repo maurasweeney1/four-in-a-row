@@ -36,6 +36,7 @@ public class Board {
         return token.getPlayerToken(player);
     }
 
+    
     /**
     * sets empty board
     *
@@ -49,6 +50,13 @@ public class Board {
             }
         }
     }
+  
+    public Integer[][] getBoard() {
+        return this.board;
+    }
+
+
+    
 
     /**
     * checks if column has room to place a token, places token
@@ -56,6 +64,7 @@ public class Board {
     * @param player is who is taking turn, column is where the token is trying to go
     * @return int of index of row heigh
     */
+
     public int placeToken(Player player, int column) {
         int index = checkIfValidPlace(column);
         if (index == -1) {
@@ -68,12 +77,31 @@ public class Board {
 
     }
 
+
+    public JLabel getToken(Player player) {
+        return token.returnTokenImage(player);
+    }
+
+    /**
+     * allows for manually placing a token for testing purposes
+     * 
+     * @return none
+     * @param player
+     * @param row
+     * @param column
+     */
+    public void manuallyPlaceToken(Player player, int row, int column){
+        board[row - 1][column - 1] = player.getPlayerNum();
+    }
+
+
     /**
     * checks if column is full, if not returns index of row the token will be in
     *
     * @param column is the column it is checking
     * @return index of row
     */
+
     private int checkIfValidPlace(int column) {
         int index = -1;
         for (int i = 5; i >= 0; i--) {
