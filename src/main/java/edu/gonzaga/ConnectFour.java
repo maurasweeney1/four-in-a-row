@@ -2,14 +2,16 @@
  * Final project main driver class
  * 
  * 
- * Project Description:
- * 
- * 
- * Contributors:
+ * Project Description: This program runs the connect four game and allows multiplayer's to play or a single player.
+ * If single player is selected then a computer plays the single player. This program includes a graphical user
+ * interface that the users can interact with.
+ *
+ * Contributors: Maya Stelzer, Maura Sweeney, Drew Fitzpatrick, Abby Hidalgo
  * 
  * 
  * Copyright: 2023
  */
+
 package edu.gonzaga;
 
 import javax.swing.JFrame;
