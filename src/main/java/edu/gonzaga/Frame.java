@@ -17,72 +17,97 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 class Frame extends JFrame {
+    /** the default width for all the windows */
     private static final int DEFAULT_WIDTH = 800;
+    /** the default height for all the windows */
     private static final int DEFAULT_HEIGHT = 600;
 
     // showStartScreen()
+    /** panel which holds the title of the game in the intro screens */
     JPanel title = new JPanel();
+    /** panel that holds the first players information in the intro screens */
     JPanel player1Panel = new JPanel();
+    /** panel that holds the second players information in the intro screens */
     JPanel player2Panel = new JPanel();
+    /** panel that holds the start button in the intro screens */
     JPanel start = new JPanel();
-
+    /** label to enter the first players name in the intro screens */
     JLabel player1Name = new JLabel("Enter Player 1 Name: ");
+    /** text field to hold the second players name in the intro screens */
     JTextField player1NameInput = new JTextField(10);
+    /** label to enter the second players name in the intro screens */
     JLabel player2Name = new JLabel("Enter Player 2 Name: ");
+    /** text field to hold the first players name in the intro screens */
     JTextField player2NameInput = new JTextField(10);
+    /** label to enter the first players colorin the intro screens */
     JLabel player1Color = new JLabel("Enter Player 1 Color: ");
+    /** label to enter the second players color in the intro screens */
     JLabel player2Color = new JLabel("Enter Player 2 Color: ");
+    /** button to move to she show game screen screen in the intro screens */
     JButton startGameButton = new JButton("Start Game");
 
     // showSelectModeScreen()
+    /*panel to show if it is player vs cpu or player vs player*/
     JPanel modePanel = new JPanel();
+    /*panel to show the player vs player mode */
     JPanel playerPanel = new JPanel();
+    /*panel to show if it is cpu vs player mode */
     JPanel cpuPanel = new JPanel();
+    /* allows player to pick game mode */
     JButton playerVSplayerButton = new JButton("Player vs Player");
+    /*allows player to pick game mode */
     JButton playerVsCPUButton = new JButton("Player vs CPU");
 
     // showGameScreen()
-    JPanel gamePanel = new JPanel();
-    Container gameLayout = getContentPane();
-    JPanel player1IconPanel = new JPanel();
-    JPanel player2CPUIconPanel = new JPanel();
-
-    JLabel player1pic = new JLabel();
-    JLabel player1Turn = new JLabel();
+    /** label to show a message after player 1's turn */
     JLabel player1InspirationMessage = new JLabel();
-
+    /** label to show a message after player 1's token */
+    JLabel player1pic = new JLabel();
+    /** label to show it is player 1's turn */
+    JLabel player1Turn = new JLabel();
+    /** label to show a message after player 2's or CPU's token */
     JLabel player2CPUpic = new JLabel();
+    /** label to show a message after player 2's or CPU'sturn */
     JLabel player2CPUTurn = new JLabel();
+    /** label to show a message after player 2's or CPU'sturn */
     JLabel player2InspirationMessage = new JLabel();
 
-    JPanel singleInstruction = new JPanel();
-    JPanel multiInstruction = new JPanel();
 
     // createGameBoard()
-    JButton[] columnHeaders = new JButton[7];
+    /** a 2D array of labels for the grid where tokens are placed */
     JLabel[][] cells = new JLabel[6][7];
-
+    /** Button to place token in column 1 */
     JButton col1Button = new JButton();
+    /** Button to place token in column 2 */
     JButton col2Button = new JButton();
+    /** Button to place token in column 3 */
     JButton col3Button = new JButton();
+    /** Button to place token in column 4 */
     JButton col4Button = new JButton();
+    /** Button to place token in column 5 */
     JButton col5Button = new JButton();
+    /** Button to place token in column 6 */
     JButton col6Button = new JButton();
+    /** Button to place token in column 7 */
     JButton col7Button = new JButton();
-
+    /** Holds the row where a token is placed */
     Integer buttonCallbackRow = 0;
     Player currentPlayer;
     Integer numButtons = 7;
 
-    // show winnerScreen()
-    JPanel winScreenPanel = new JPanel();
-
+    /** holds whether or not the game is multiplayer */
     boolean isMulti;
 
     public Frame() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
-
+    /**
+     * Sets up and opens the select mode screen where the user can either choose
+     * multiplayer or singleplayer mode
+     *
+     * @param board, players 1 and 2, and the CPU
+     * @return a boolean for whether or not the game is multiplayer
+     */
     public boolean showSelectModeScreen(Board board, Player player1, Player player2, CPU computer) {
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -128,8 +153,15 @@ class Frame extends JFrame {
 
         return isMulti;
     }
-
+    /**
+     * displays the multiplayer start screen where the player's can enter their
+     * names and colors
+     *
+     * @param board, players 1 and 2, and the CPU
+     * @return displays the screen, takes in the players names and colors
+     */
     public void showStartScreen(Board board, Player player1, Player player2, CPU computer) {
+        JPanel multiInstruction = new JPanel();
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
@@ -218,7 +250,15 @@ class Frame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * displays the singleplayer start screen where the player can enter their name
+     * and color
+     *
+     * @param board, players 1 and 2, and the CPU
+     * @return displays the screen, takes in the player's name and color
+     */
     public void showStartScreenSinglePlayer(Board board, Player player1, Player player2, CPU computer) {
+        JPanel singleInstruction = new JPanel();
         setPlayerIcons(board, player1, computer);
         Container contentPane = getContentPane();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
@@ -291,8 +331,18 @@ class Frame extends JFrame {
         getContentPane().add(BorderLayout.CENTER, start);
         setVisible(true);
     }
-
+    /**
+     * Displays the game screen with the game board and each player or CPU
+     *
+     * @param board, players 1 and 2, and the CPU
+     * @return the screen is displayed, takes in information regarding each players
+     *         token placement
+     */
     public void showGameScreen(Board board, Player player1, Player player2, CPU computer) {
+        Container gameLayout = getContentPane();
+        JPanel gamePanel = new JPanel();
+        JPanel player1IconPanel = new JPanel();
+        JPanel player2CPUIconPanel = new JPanel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Connect4");
 
@@ -326,15 +376,20 @@ class Frame extends JFrame {
 
         setVisible(true);
     }
-
+    /**
+     * sets up the grid containing the game board
+     *
+     * @param panel it exists in
+     * @return the game board is set to the screen
+     */
     public void createGameBoard(JPanel panel) {
+        JButton[] columnHeaders = new JButton[7];
         JPanel board = new JPanel();
         board.setLayout(new GridLayout(7, 7, 2, 2));
         col1Button.setText("↓");
         columnHeaders[0] = col1Button;
         col1Button.setPreferredSize(new Dimension(50, 50));
         board.add(col1Button);
-
         col2Button.setText("↓");
         columnHeaders[1] = col2Button;
         col2Button.setPreferredSize(new Dimension(50, 50));
@@ -378,7 +433,14 @@ class Frame extends JFrame {
 
         panel.add(board);
     }
-
+    /**
+     * creates action listeners for each column a token can be placed in, places the
+     * token, and updates the screen
+     *
+     * @param board, players 1 and 2, and the CPU
+     * @return the screen displays changes based on the player's placement, checks
+     *         for four in a row
+     */
     public void addButtonCallbackHandlers(Board board, Player player1, Player player2, CPU computer) {
 
         col1Button.addActionListener(new ActionListener() {
@@ -451,7 +513,14 @@ class Frame extends JFrame {
             }
         });
     }
-
+    /**
+     * checks if the selected column is a valid place, places the token for player
+     * or CPU, checks for four in a row, and either updates the screen, displays a
+     * new screen for a winner, or displays a screen for a tie
+     *
+     * @param board, players 1 and 2, the selected column and the CPU
+     * @return updates the screen and placement on the board
+     */
     private boolean canTakeTurn(Board board, Player player1, Player player2, Integer column, CPU computer) {
         if (isMulti) {
             if (board.getRoundCount() % 2 == 0) {
@@ -535,7 +604,12 @@ class Frame extends JFrame {
         }
         return true;
     }
-
+    /**
+     * displays a screen showing that both players tied
+     *
+     * @param player1 and player 2
+     * @return updates the screen
+     */
     public void showTieScreen(Player player1, Player player2) {
         ImageIcon imageIcon = new ImageIcon("images/winScreenLogo.png");
         Image image = imageIcon.getImage();
@@ -557,7 +631,12 @@ class Frame extends JFrame {
         setVisible(true);
         pack();
     }
-
+    /**
+     * displays a screen showing that one player won
+     *
+     * @param  winner
+     * @return updates the screen
+     */
     public void showWinnerScreen(Player winner) {
         ImageIcon imageIcon = new ImageIcon("images/winScreenLogo.png");
         Image image = imageIcon.getImage();
@@ -578,7 +657,12 @@ class Frame extends JFrame {
         pack();
         setVisible(true);
     }
-
+    /**
+     * displays the tokens of each player and who's turn it currently is
+     *
+     * @param board, player 1 and player 2 or the CPU
+     * @return displays the tokens and the current players turn
+     */
     private void setPlayerIcons(Board board, Player player1, Player player2CPU) {
         player1pic.setIcon(new ImageIcon(new ImageIcon(board.getPlayerToken(player1)).getImage().getScaledInstance(150,
                 150, Image.SCALE_DEFAULT)));
@@ -593,7 +677,12 @@ class Frame extends JFrame {
             player2CPUTurn.setText("Its the computer's turn!");
         }
     }
-
+    /**
+     * provides a random inspirational message to the player that just placed their
+     * token
+     *
+     * @return a String containing the message
+     */
     private String setInspirationalMessage() {
         String[] messages = { "Great move!", "Keep it up!", "Amazing!", "You can do it!", "Good strategy!",
                 "Nice!", "Very impressive!", "Genius!", "Well done!", "Nice one!", "You're a star!" };
