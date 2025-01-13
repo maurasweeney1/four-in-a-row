@@ -6,8 +6,9 @@ Connect Four is a two-player strategy game. The objective of the game is to be t
 
 ### Clone the Repository
 
-git clone https://github.com/maurasweeney1/four-in-a-row.git
-cd final-game-project-four-in-a-row
+`git clone https://github.com/maurasweeney1/four-in-a-row.git`
+
+`cd final-game-project-four-in-a-row`
 
 
 ### Install Dependencies 
@@ -19,7 +20,7 @@ Ensure Java and Maven are installed on your system.
 
 Verify Java installation by running:
 
-java -version
+`java -version`
 
 If not installed, download and install Java from Oracle or use a package manager like Homebrew or APT.
 
@@ -28,7 +29,7 @@ If not installed, download and install Java from Oracle or use a package manager
 
 Verify Maven installation by running:
 
-mvn -v
+`mvn -v`
 
 If not installed, install Maven using your system's package manager or download it from Maven's official website.
 
@@ -37,14 +38,14 @@ If not installed, install Maven using your system's package manager or download 
 
 Compile and package the application using Maven:
 
-mvn clean install
+`mvn clean install`
 
 
 ### Run the Application
 
 Run the project using the Maven exec plugin:
 
-mvn exec:java -Dexec.mainClass="edu.gonzaga.ConnectFour"
+`mvn exec:java -Dexec.mainClass="edu.gonzaga.ConnectFour"`
 
 
 ### Usage
